@@ -19,10 +19,7 @@ const BookList = ({ books, onStatusChange }: BookListProps) => {
         return (
             <BookCard
                 key={`${book.title}-${book.author}`}
-                bookId={book.id}
-                title={book.title}
-                author={book.author}
-                status={book.status}
+                book={book}
                 onStatusChange={onStatusChange}
             />
         );

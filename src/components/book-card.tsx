@@ -4,10 +4,7 @@ import { Book } from "@/types/book";
 import { StatusDropdown } from "./status-dropdown";
 
 interface BookCardProps {
-    bookId: Book["id"];
-    title: Book["title"];
-    author: Book["author"];
-    status: Book["status"];
+    book: Book;
     onStatusChange: ({
         bookId,
         newStatus,
@@ -17,20 +14,14 @@ interface BookCardProps {
     }) => void;
 }
 
-const BookCard = ({
-    bookId,
-    title,
-    author,
-    status,
-    onStatusChange,
-}: BookCardProps) => {
+const BookCard = ({ book, onStatusChange }: BookCardProps) => {
     return (
         <div>
-            <h2>{title}</h2>
-            <p>{author}</p>
+            <h2>{book.title}</h2>
+            <p>{book.author}</p>
             <StatusDropdown
-                bookId={bookId}
-                currentStatus={status}
+                bookId={book.id}
+                currentStatus={book.status}
                 onStatusChange={onStatusChange}
             />
         </div>
