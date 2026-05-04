@@ -1,6 +1,7 @@
 "use client";
 
 import { BookList } from "@/components/book-list";
+import { FilterControls } from "@/components/filter-controls";
 import { Book } from "@/types/book";
 import { useState } from "react";
 
@@ -32,6 +33,7 @@ interface onStatusChangeProps {
 
 export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
+    const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
 
     const onStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
         const updatedBooks = books.map((book) => {
@@ -46,10 +48,18 @@ export default function Home() {
         setBooks(updatedBooks);
         return;
     };
+
+    const filterBooks = () => {
+        if (filter === "ALL") return books;
+        const filteredBooks = books.filter((book) => book.status === filter);
+        return filteredBooks;
+    };
+
     return (
         <main>
             <h1>Reading Tracker</h1>
-            <BookList books={books} onStatusChange={onStatusChange} />
+            <FilterControls setFilter={setFilter} />
+            <BookList books={filterBooks()} onStatusChange={onStatusChange} />
         </main>
     );
 }

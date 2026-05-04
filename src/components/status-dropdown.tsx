@@ -26,10 +26,10 @@ const StatusDropdown = ({
 
     return (
         <>
-            <label htmlFor="status">Status:</label>
+            <label htmlFor={`status-${bookId}`}>Status:</label>
             <select
                 name="status"
-                id="status"
+                id={`status-${bookId}`}
                 value={currentStatus}
                 onChange={onChange}
             >
