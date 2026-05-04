@@ -1,21 +1,38 @@
+"use client";
+
+import { Book } from "@/types/book";
+import { StatusDropdown } from "./status-dropdown";
+
 interface BookCardProps {
-    title: string;
-    author: string;
-    status: "TO_READ" | "READING" | "FINISHED" | "ABANDONED";
+    bookId: Book["id"];
+    title: Book["title"];
+    author: Book["author"];
+    status: Book["status"];
+    onStatusChange: ({
+        bookId,
+        newStatus,
+    }: {
+        bookId: Book["id"];
+        newStatus: Book["status"];
+    }) => void;
 }
 
-const BookCard = ({ title, author, status }: BookCardProps) => {
-    const handleChangeStatus = () => {
-        // TODO: Logic to change the status of the book
-        console.log(`Changing status of "${title}" by ${author}`);
-    };
-
+const BookCard = ({
+    bookId,
+    title,
+    author,
+    status,
+    onStatusChange,
+}: BookCardProps) => {
     return (
         <div>
             <h2>{title}</h2>
             <p>{author}</p>
-            <p>Status: {status}</p>
-            <button onClick={handleChangeStatus}>Change status</button>
+            <StatusDropdown
+                bookId={bookId}
+                currentStatus={status}
+                onStatusChange={onStatusChange}
+            />
         </div>
     );
 };

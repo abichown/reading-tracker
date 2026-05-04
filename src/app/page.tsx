@@ -1,7 +1,10 @@
+"use client";
+
 import { BookList } from "@/components/book-list";
 import { Book } from "@/types/book";
+import { useState } from "react";
 
-const books: Book[] = [
+const defaultBooks: Book[] = [
     {
         id: "1",
         title: "Harry Potter",
@@ -22,11 +25,31 @@ const books: Book[] = [
     },
 ];
 
+interface onStatusChangeProps {
+    bookId: Book["id"];
+    newStatus: Book["status"];
+}
+
 export default function Home() {
+    const [books, setBooks] = useState(defaultBooks);
+
+    const onStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
+        const updatedBooks = books.map((book) => {
+            if (book.id === bookId) {
+                return {
+                    ...book,
+                    status: newStatus,
+                };
+            }
+            return book;
+        });
+        setBooks(updatedBooks);
+        return;
+    };
     return (
         <main>
             <h1>Reading Tracker</h1>
-            <BookList books={books} />
+            <BookList books={books} onStatusChange={onStatusChange} />
         </main>
     );
 }
