@@ -1,8 +1,10 @@
 "use client";
 
+import { AddBookForm } from "@/components/add-book-form";
 import { BookList } from "@/components/book-list";
 import { FilterControls } from "@/components/filter-controls";
 import { Book } from "@/types/book";
+import { randomUUID } from "crypto";
 import { useState } from "react";
 
 const defaultBooks: Book[] = [
@@ -31,9 +33,16 @@ interface onStatusChangeProps {
     newStatus: Book["status"];
 }
 
+interface onAddBookProps {
+    title: Book["title"];
+    author: Book["author"];
+}
+
 export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
     const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
+
+    console.log(books);
 
     const onStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
         const updatedBooks = books.map((book) => {
@@ -49,6 +58,18 @@ export default function Home() {
         return;
     };
 
+    const onAddBook = ({ title, author }: onAddBookProps) => {
+        setBooks([
+            ...books,
+            {
+                id: crypto.randomUUID(),
+                title,
+                author,
+                status: "TO_READ",
+            } as Book,
+        ]);
+    };
+
     const filterBooks = () => {
         if (filter === "ALL") return books;
         const filteredBooks = books.filter((book) => book.status === filter);
@@ -60,6 +81,7 @@ export default function Home() {
             <h1>Reading Tracker</h1>
             <FilterControls setFilter={setFilter} />
             <BookList books={filterBooks()} onStatusChange={onStatusChange} />
+            <AddBookForm onAddBook={onAddBook} />
         </main>
     );
 }

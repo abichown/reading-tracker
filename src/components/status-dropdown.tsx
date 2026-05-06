@@ -19,8 +19,9 @@ const StatusDropdown = ({
     currentStatus,
     onStatusChange,
 }: StatusDropdownProps) => {
-    const onChange = (e: any) => {
-        const newStatus = e.target.value as Book["status"];
+    const onChange = (e: React.SyntheticEvent) => {
+        const target = e.target as HTMLSelectElement;
+        const newStatus = target.value as Book["status"];
         onStatusChange({ bookId, newStatus });
     };
 
