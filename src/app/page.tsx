@@ -46,24 +46,23 @@ export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
     const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
 
-    console.log(books);
-
-    const onStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
-        const updatedBooks = books.map((book) => {
-            if (book.id === bookId) {
-                return {
-                    ...book,
-                    status: newStatus,
-                };
-            }
-            return book;
-        });
-        setBooks(updatedBooks);
+    const handleStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
+        setBooks((books) =>
+            books.map((book) => {
+                if (book.id === bookId) {
+                    return {
+                        ...book,
+                        status: newStatus,
+                    };
+                }
+                return book;
+            }),
+        );
         return;
     };
 
-    const onAddBook = ({ title, author }: onAddBookProps) => {
-        setBooks([
+    const handleAddBook = ({ title, author }: onAddBookProps) => {
+        setBooks((books) => [
             ...books,
             {
                 id: crypto.randomUUID(),
@@ -74,14 +73,13 @@ export default function Home() {
         ]);
     };
 
-    const onDeleteBook = ({ bookId }: onDeleteBookProps) => {
+    const handleDeleteBook = ({ bookId }: onDeleteBookProps) => {
         setBooks((books) => books.filter((book) => book.id !== bookId));
     };
 
     const filterBooks = () => {
         if (filter === "ALL") return books;
-        const filteredBooks = books.filter((book) => book.status === filter);
-        return filteredBooks;
+        return books.filter((book) => book.status === filter);
     };
 
     return (
@@ -90,10 +88,10 @@ export default function Home() {
             <FilterControls setFilter={setFilter} />
             <BookList
                 books={filterBooks()}
-                onStatusChange={onStatusChange}
-                onDelete={onDeleteBook}
+                onStatusChange={handleStatusChange}
+                onDeleteBook={handleDeleteBook}
             />
-            <AddBookForm onAddBook={onAddBook} />
+            <AddBookForm onAddBook={handleAddBook} />
         </main>
     );
 }
