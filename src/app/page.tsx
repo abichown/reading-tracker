@@ -38,6 +38,10 @@ interface onAddBookProps {
     author: Book["author"];
 }
 
+interface onDeleteBookProps {
+    bookId: Book["id"];
+}
+
 export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
     const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
@@ -70,6 +74,10 @@ export default function Home() {
         ]);
     };
 
+    const onDeleteBook = ({ bookId }: onDeleteBookProps) => {
+        setBooks((books) => books.filter((book) => book.id !== bookId));
+    };
+
     const filterBooks = () => {
         if (filter === "ALL") return books;
         const filteredBooks = books.filter((book) => book.status === filter);
@@ -80,7 +88,11 @@ export default function Home() {
         <main>
             <h1>Reading Tracker</h1>
             <FilterControls setFilter={setFilter} />
-            <BookList books={filterBooks()} onStatusChange={onStatusChange} />
+            <BookList
+                books={filterBooks()}
+                onStatusChange={onStatusChange}
+                onDelete={onDeleteBook}
+            />
             <AddBookForm onAddBook={onAddBook} />
         </main>
     );

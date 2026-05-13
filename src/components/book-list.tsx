@@ -12,15 +12,17 @@ interface BookListProps {
         bookId: Book["id"];
         newStatus: Book["status"];
     }) => void;
+    onDelete: ({ bookId }: { bookId: Book["id"] }) => void;
 }
 
-const BookList = ({ books, onStatusChange }: BookListProps) => {
+const BookList = ({ books, onStatusChange, onDelete }: BookListProps) => {
     const bookCards = books.map((book) => {
         return (
             <BookCard
                 key={`${book.title}-${book.author}`}
                 book={book}
                 onStatusChange={onStatusChange}
+                onDelete={onDelete}
             />
         );
     });

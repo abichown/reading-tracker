@@ -12,9 +12,14 @@ interface BookCardProps {
         bookId: Book["id"];
         newStatus: Book["status"];
     }) => void;
+    onDelete: ({ bookId }: { bookId: Book["id"] }) => void;
 }
 
-const BookCard = ({ book, onStatusChange }: BookCardProps) => {
+const BookCard = ({ book, onStatusChange, onDelete }: BookCardProps) => {
+    const handleOnClick = () => {
+        onDelete({ bookId: book.id });
+    };
+
     return (
         <div>
             <h2>{book.title}</h2>
@@ -24,6 +29,7 @@ const BookCard = ({ book, onStatusChange }: BookCardProps) => {
                 currentStatus={book.status}
                 onStatusChange={onStatusChange}
             />
+            <button onClick={handleOnClick}>Delete book</button>
         </div>
     );
 };
