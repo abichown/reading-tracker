@@ -1,11 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { AddBookForm } from "@/components/add-book-form";
 import { BookList } from "@/components/book-list";
 import { FilterControls } from "@/components/filter-controls";
 import { SearchBar } from "@/components/search-bar";
 import { Book } from "@/types/book";
-import { useState } from "react";
 
 const defaultBooks: Book[] = [
     {
@@ -42,6 +42,21 @@ interface onDeleteBookProps {
     bookId: Book["id"];
 }
 
+const createBook = ({
+    author,
+    title,
+}: {
+    author: Book["author"];
+    title: Book["title"];
+}): Book => {
+    return {
+        id: crypto.randomUUID(),
+        title,
+        author,
+        status: "TO_READ",
+    };
+};
+
 export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
     const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
@@ -59,64 +74,37 @@ export default function Home() {
                 return book;
             }),
         );
-        return;
     };
 
     const handleAddBook = ({ title, author }: onAddBookProps) => {
-        setBooks((books) => [
-            ...books,
-            {
-                id: crypto.randomUUID(),
-                title,
-                author,
-                status: "TO_READ",
-            } as Book,
-        ]);
+        setBooks((books) => [...books, createBook({ author, title })]);
     };
 
     const handleDeleteBook = ({ bookId }: onDeleteBookProps) => {
         setBooks((books) => books.filter((book) => book.id !== bookId));
     };
 
-    const filterBooks = () => {
-        // no filter, no search
-        if (filter === "ALL" && !searchTerm) return books;
-        // filter, no search
-        else if (filter !== "ALL" && !searchTerm) {
-            return books.filter((book) => book.status === filter);
-        }
-        // no filter, search
-        else if (filter === "ALL" && searchTerm) {
-            return books.filter(
-                (book) =>
-                    book.author.toLowerCase().includes(searchTerm) ||
-                    book.title.toLowerCase().includes(searchTerm),
-            );
-        }
-        // filter, search
-        else {
-            const filteredBooks = books.filter(
-                (book) => book.status === filter,
-            );
-            return filteredBooks.filter(
-                (book) =>
-                    book.author.toLowerCase().includes(searchTerm) ||
-                    book.title.toLowerCase().includes(searchTerm),
-            );
-        }
+    const handleSearch = (searchTerm: string) => {
+        setSearchTerm(searchTerm);
     };
 
-    const onSearch = (searchTerm: string) => {
-        setSearchTerm(searchTerm.toLowerCase());
-    };
+    const normalisedSearchTerm = searchTerm.toLowerCase();
+
+    const filteredBooks = books
+        .filter((book) => filter === "ALL" || book.status === filter)
+        .filter(
+            (book) =>
+                book.author.toLowerCase().includes(normalisedSearchTerm) ||
+                book.title.toLowerCase().includes(normalisedSearchTerm),
+        );
 
     return (
         <main>
             <h1>Reading Tracker</h1>
-            <SearchBar onSearch={onSearch} />
+            <SearchBar onSearch={handleSearch} />
             <FilterControls setFilter={setFilter} />
             <BookList
-                books={filterBooks()}
+                books={filteredBooks}
                 onStatusChange={handleStatusChange}
                 onDeleteBook={handleDeleteBook}
             />
