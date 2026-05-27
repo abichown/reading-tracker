@@ -3,8 +3,8 @@
 import { AddBookForm } from "@/components/add-book-form";
 import { BookList } from "@/components/book-list";
 import { FilterControls } from "@/components/filter-controls";
+import { SearchBar } from "@/components/search-bar";
 import { Book } from "@/types/book";
-import { randomUUID } from "crypto";
 import { useState } from "react";
 
 const defaultBooks: Book[] = [
@@ -45,6 +45,7 @@ interface onDeleteBookProps {
 export default function Home() {
     const [books, setBooks] = useState(defaultBooks);
     const [filter, setFilter] = useState<"ALL" | Book["status"]>("ALL");
+    const [searchTerm, setSearchTerm] = useState("");
 
     const handleStatusChange = ({ bookId, newStatus }: onStatusChangeProps) => {
         setBooks((books) =>
@@ -78,13 +79,41 @@ export default function Home() {
     };
 
     const filterBooks = () => {
-        if (filter === "ALL") return books;
-        return books.filter((book) => book.status === filter);
+        // no filter, no search
+        if (filter === "ALL" && !searchTerm) return books;
+        // filter, no search
+        else if (filter !== "ALL" && !searchTerm) {
+            return books.filter((book) => book.status === filter);
+        }
+        // no filter, search
+        else if (filter === "ALL" && searchTerm) {
+            return books.filter(
+                (book) =>
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.title.toLowerCase().includes(searchTerm),
+            );
+        }
+        // filter, search
+        else {
+            const filteredBooks = books.filter(
+                (book) => book.status === filter,
+            );
+            return filteredBooks.filter(
+                (book) =>
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.title.toLowerCase().includes(searchTerm),
+            );
+        }
+    };
+
+    const onSearch = (searchTerm: string) => {
+        setSearchTerm(searchTerm.toLowerCase());
     };
 
     return (
         <main>
             <h1>Reading Tracker</h1>
+            <SearchBar onSearch={onSearch} />
             <FilterControls setFilter={setFilter} />
             <BookList
                 books={filterBooks()}
