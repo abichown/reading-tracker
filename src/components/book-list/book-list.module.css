@@ -1,0 +1,11 @@
+.bookList h2 {
+    text-align: center;
+    color: rgb(12, 51, 67);
+    text-decoration: overline;
+}
+
+.bookCards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}

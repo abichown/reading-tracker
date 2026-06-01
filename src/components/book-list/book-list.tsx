@@ -1,7 +1,8 @@
 "use client";
 
 import type { Book } from "@/types/book";
-import { BookCard } from "./book-card";
+import styles from "./book-list.module.css";
+import { BookCard } from "../book-card/book-card";
 
 interface BookListProps {
     books: Book[];
@@ -27,7 +28,12 @@ const BookList = ({ books, onStatusChange, onDeleteBook }: BookListProps) => {
         );
     });
 
-    return <div>{bookCards}</div>;
+    return (
+        <div className={styles.bookList}>
+            <h2>Your library</h2>
+            <div className={styles.bookCards}>{bookCards}</div>
+        </div>
+    );
 };
 
 export { BookList };

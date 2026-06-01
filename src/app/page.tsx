@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { AddBookForm } from "@/components/add-book-form";
-import { BookList } from "@/components/book-list";
-import { FilterControls } from "@/components/filter-controls";
-import { SearchBar } from "@/components/search-bar";
+import { Fragment, useState } from "react";
+import { AddBookForm } from "@/components/add-book-form/add-book-form";
+import { BookList } from "@/components/book-list/book-list";
 import { Book } from "@/types/book";
+import { Controls } from "@/components/controls/controls";
+import styles from "./page.module.css";
 
 const defaultBooks: Book[] = [
     {
@@ -99,16 +99,19 @@ export default function Home() {
         );
 
     return (
-        <main>
-            <h1>Reading Tracker</h1>
-            <SearchBar onSearch={handleSearch} />
-            <FilterControls setFilter={setFilter} />
-            <BookList
-                books={filteredBooks}
-                onStatusChange={handleStatusChange}
-                onDeleteBook={handleDeleteBook}
-            />
-            <AddBookForm onAddBook={handleAddBook} />
-        </main>
+        <Fragment>
+            <header>
+                <h1 className={styles.heading}>Reading Tracker</h1>
+            </header>
+            <main className={styles.content}>
+                <Controls handleSearch={handleSearch} setFilter={setFilter} />
+                <AddBookForm onAddBook={handleAddBook} />
+                <BookList
+                    books={filteredBooks}
+                    onStatusChange={handleStatusChange}
+                    onDeleteBook={handleDeleteBook}
+                />
+            </main>
+        </Fragment>
     );
 }

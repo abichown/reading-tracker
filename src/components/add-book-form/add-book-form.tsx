@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./add-book-form.module.css";
 
 interface AddBookFormProps {
     onAddBook: ({ title, author }: { title: string; author: string }) => void;
@@ -28,10 +29,10 @@ const AddBookForm = ({ onAddBook }: AddBookFormProps) => {
     };
 
     return (
-        <>
-            <h3>Add a book</h3>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
+        <div className={styles.addBookForm}>
+            <h3>Add a book to your library</h3>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <label htmlFor="title">Title:</label>
                 <input
                     id="title"
                     name="title"
@@ -41,7 +42,7 @@ const AddBookForm = ({ onAddBook }: AddBookFormProps) => {
                     }}
                     value={title}
                 />
-                <label htmlFor="author">Author</label>
+                <label htmlFor="author">Author:</label>
                 <input
                     id="author"
                     name="author"
@@ -54,7 +55,7 @@ const AddBookForm = ({ onAddBook }: AddBookFormProps) => {
                 <button type="submit">Add book</button>
             </form>
             {!!errorMessage && errorMessage}
-        </>
+        </div>
     );
 };
 

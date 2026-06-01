@@ -1,7 +1,8 @@
 "use client";
 
 import { Book } from "@/types/book";
-import { StatusDropdown } from "./status-dropdown";
+import styles from "./book-card.module.css";
+import { StatusDropdown } from "../status-dropdown/status-dropdown";
 
 interface BookCardProps {
     book: Book;
@@ -21,9 +22,9 @@ const BookCard = ({ book, onStatusChange, onDelete }: BookCardProps) => {
     };
 
     return (
-        <div>
-            <h2>{book.title}</h2>
-            <p>{book.author}</p>
+        <div className={styles.bookCard}>
+            <h3>{book.title}</h3>
+            <p>{`Author: ${book.author}`}</p>
             <StatusDropdown
                 bookId={book.id}
                 currentStatus={book.status}

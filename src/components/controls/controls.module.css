@@ -1,0 +1,10 @@
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    align-items: center;
+    background-color: rgba(33, 146, 191, 0.339);
+    border-radius: 5px;
+    border: 3px solid rgb(18, 77, 101);
+    padding: 10px;
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Book } from "@/types/book";
+import styles from "./status-dropdown.module.css";
 
 interface StatusDropdownProps {
     bookId: Book["id"];
@@ -26,7 +27,7 @@ const StatusDropdown = ({
     };
 
     return (
-        <>
+        <div className={styles.dropdown}>
             <label htmlFor={`status-${bookId}`}>Status:</label>
             <select
                 name="status"
@@ -39,7 +40,7 @@ const StatusDropdown = ({
                 <option value="FINISHED">Finished</option>
                 <option value="ABANDONED">Abandoned</option>
             </select>
-        </>
+        </div>
     );
 };
 

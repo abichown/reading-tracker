@@ -1,0 +1,16 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.heading {
+    color: rgb(12, 51, 67);
+    text-align: center;
+    text-decoration: overline;
+}
+
+.footer {
+    background-color: rgb(214, 230, 236);
+    padding: 30px;
+}

@@ -1,0 +1,9 @@
+.dropdown {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.dropdown label {
+    color: white;
+}
